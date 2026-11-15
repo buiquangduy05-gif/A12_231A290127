@@ -1,5 +1,6 @@
 package vn.edu.vhu.ltdd.a12sqlite;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -22,6 +23,10 @@ public class MainActivity extends AppCompatActivity {
 
     // MSSV: 231A290127 - Bùi Quang Duy
     private static final String TAG = "A12_231A290127";
+
+    // NC1: Hằng số cho SharedPreferences lưu tên lớp mặc định
+    private static final String PREFS_NAME = "cai_dat";
+    private static final String KEY_LOP_MAC_DINH = "lop_mac_dinh";
 
     private SinhVienDao dao;
     private final List<SinhVien> danhSach = new ArrayList<>();
@@ -47,6 +52,11 @@ public class MainActivity extends AppCompatActivity {
         edtDiem = findViewById(R.id.edtDiem);
         tvThongKe = findViewById(R.id.tvThongKe);
         Button btnThem = findViewById(R.id.btnThem);
+
+        // NC1: Đọc tên lớp mặc định từ SharedPreferences và tự điền sẵn khi mở app
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        String lopMacDinh = prefs.getString(KEY_LOP_MAC_DINH, "");
+        edtLop.setText(lopMacDinh);
 
         RecyclerView rv = findViewById(R.id.rvSinhVien);
         rv.setLayoutManager(new LinearLayoutManager(this));
@@ -111,6 +121,12 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d(TAG, "Đã thêm sinh viên, id = " + id);
         Toast.makeText(this, getString(R.string.da_them, id), Toast.LENGTH_SHORT).show();
+
+        // NC1: Ghi lại tên lớp vừa nhập vào SharedPreferences cho lần sau
+        getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
+                .edit()
+                .putString(KEY_LOP_MAC_DINH, lop)
+                .apply();
 
         edtMaSv.setText("");
         edtHoTen.setText("");
