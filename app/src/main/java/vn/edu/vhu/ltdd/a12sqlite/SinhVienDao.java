@@ -96,6 +96,29 @@ public class SinhVienDao {
         }
     }
 
+    /** NC2: Đếm số sinh viên đạt (điểm >= 5). */
+    public int demSinhVienDat() {
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT COUNT(*) FROM " + DbHelper.TABLE
+                + " WHERE " + DbHelper.COL_DIEM + " >= 5", null);
+        try {
+            return c.moveToFirst() ? c.getInt(0) : 0;
+        } finally {
+            c.close();
+        }
+    }
+
+    /** NC2: Điểm cao nhất trong danh sách — minh họa hàm MAX của SQL. */
+    public double diemCaoNhat() {
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT MAX(" + DbHelper.COL_DIEM + ") FROM " + DbHelper.TABLE, null);
+        try {
+            return c.moveToFirst() ? c.getDouble(0) : 0;
+        } finally {
+            c.close();
+        }
+    }
+
     /** Gọi khi không dùng nữa (ví dụ trong onDestroy của Activity). */
     public void dong() {
         helper.close();

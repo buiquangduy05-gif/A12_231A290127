@@ -65,7 +65,8 @@ public class MainActivity extends AppCompatActivity {
         danhSach.clear();
         danhSach.addAll(dao.layTatCa());
         adapter.notifyDataSetChanged();
-        tvThongKe.setText(getString(R.string.thong_ke, dao.dem(), dao.diemTrungBinh()));
+        tvThongKe.setText(getString(R.string.thong_ke,
+                dao.dem(), dao.diemTrungBinh(), dao.demSinhVienDat(), dao.diemCaoNhat()));
         Log.d(TAG, "Nạp " + danhSach.size() + " sinh viên từ CSDL");
     }
 
